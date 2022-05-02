@@ -30,7 +30,7 @@ twitter_username:
 github_username:  Studiofarma
 
 # Build settings
-theme: jekyll-theme-minimal
+theme: minima
 plugins:
   - jekyll-feed
 

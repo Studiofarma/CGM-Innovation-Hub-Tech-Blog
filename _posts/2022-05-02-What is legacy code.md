@@ -6,7 +6,7 @@ categories: jekyll update
 ---
 
 <center>
-    <img src="0.jpg" width="500">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/0.jpg" width="500">
     <br>
     <em> Photo by
         <a href="https://en.wikipedia.org/wiki/Punched_card#/media/File:Blue-punch-card-front-horiz.png">
@@ -28,7 +28,7 @@ This results in inflated estimates and costs that grow exponentially.
 To answer these questions, I did what anyone would do: I googled.
 
 <center>
-    <img src="1.jpg" width="500">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/1.jpg" width="500">
     <br>
     <em> Photo by
         <a href="https://www.meme-arsenal.com/memes/58b301f6612908a498826a64b4937dd6.jpg">
@@ -47,7 +47,7 @@ I found many definitions of "legacy code" on the internet:
 - code without tests (<https://understandlegacycode.com/blog/what-is-legacy-code-is-it-code-without-tests>)
 
 <center>
-    <img src="2.jpg" width="500">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/2.jpg" width="500">
     <br>
     <em> Photo by
         <a href="https://www.meme-arsenal.com/memes/58b301f6612908a498826a64b4937dd6.jpg">
@@ -98,79 +98,18 @@ Let's consider a trivial example.
 A program that calculates the Fibonacci sequence: each number of the sequence is the sum of the previous two numbers.
 
 <center>
-    <img src="3.jpg" width="500">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/3.jpg" width="500">
 </center>
 
 Let's see implementations in two different programming languages: the dear old C and the more recent C#.
 
 ### Fibonacci sequence in C
 
-```C
-#include<stdio.h>
-
-int get_fibonacci_number(int index);
-int get_index_from_console();
-void print_fibonacci_number_on_console(int index);
-
-int main ()
-{
-    int index = get_index_from_console();
-    print_fibonacci_number_on_console(index);
-
-    getchar();
-    return 0;
-}
-
-int get_fibonacci_number(int index)
-{
-    if (index <= 1)
-        return index;
-
-    return get_fibonacci_number(index-1) + get_fibonacci_number(index-2);
-}
-
-int get_index_from_console()
-{
-    int index;
-
-    printf("Enter Fibonacci sequence index: ");
-    scanf("%d", &index);
-
-    return index;
-}
-
-void print_fibonacci_number_on_console(int index)
-{
-    printf("%d", get_fibonacci_number(index));
-}
-```
+{% gist 75bd7dd18ac985e32ad0278c1cc6bea2 %}
 
 ### Fibonacci sequence in C\#
 
-```C#
-using System;
-
-public class Program
-{
-    public static void Main()
-    {
-        Console.WriteLine("Enter Fibonacci sequence index: ");
-        int n = Convert.ToInt32(Console.ReadLine());
-
-        int []f = new int[n + 2];
-        int i;
-        f[0] = 0;
-        f[1] = 1;
-
-        for (i = 2; i <= n; i++)
-        {
-            f[i] = f[i - 1] + f[i - 2];
-        }
-
-        Console.WriteLine(f[n]);
-    }
-}
-```
+{% gist ea17731fdd0de434af6a80be7d5b492e %}
 
 These two programs do the same thing but the differences are huge.
 
@@ -234,7 +173,7 @@ In the end, a short and effective definition might be:
 **legacy code is untested code that is hard to change.**
 
 <center>
-    <img src="4.jpg" width="500">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/4.jpg" width="500">
     <br>
     <em> Photo by
         <a href="https://www.hallofseries.com/wp-content/uploads/2019/01/Immagine-1.png">

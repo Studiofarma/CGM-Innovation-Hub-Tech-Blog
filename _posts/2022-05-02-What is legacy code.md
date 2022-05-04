@@ -1,21 +1,11 @@
 ---
 layout: post
-title:  "What is legacy code?"
-date:   2022-05-02 12:25:12 +0200
-categories: jekyll update
+title: "What is legacy code?"
+author: paolo.venturi
+categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
+image: assets/images/what_is_legacy_code/0.jpg
 ---
 
-<center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/0.jpg" width="500">
-    <br>
-    <em> Photo by
-        <a href="https://en.wikipedia.org/wiki/Punched_card#/media/File:Blue-punch-card-front-horiz.png">
-            Wikipedia
-        </a>
-    </em>
-</center>
-
-\
 In software projects, as in other fields, it is important to keep low costs and development time.\
 The time of implementing a new feature or fixing a bug depends on the status of the existing codebase.\
 Estimating the effort of changing simple and clean code is easy. While it's harder to make predictions with legacy code.\
@@ -105,11 +95,13 @@ Let's see implementations in two different programming languages: the dear old C
 
 ### Fibonacci sequence in C
 
-{% gist 75bd7dd18ac985e32ad0278c1cc6bea2 %}
+<script src="https://gist.github.com/paoloventuri91/75bd7dd18ac985e32ad0278c1cc6bea2.js"></script>
+&nbsp;
 
 ### Fibonacci sequence in C\#
 
-{% gist ea17731fdd0de434af6a80be7d5b492e %}
+<script src="https://gist.github.com/paoloventuri91/ea17731fdd0de434af6a80be7d5b492e.js"></script>
+&nbsp;
 
 These two programs do the same thing but the differences are huge.
 

@@ -1,16 +1,11 @@
-# Che cos'è il legacy code?
+---
+layout: post
+title:  "Che cos'è il legacy code?"
+author: paolo.venturi
+categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
+image: assets/images/what_is_legacy_code/0.jpg
+---
 
-<center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/what_is_legacy_code/0.jpg" width="500">
-    <br>
-    <em> Photo by
-        <a href="https://en.wikipedia.org/wiki/Punched_card#/media/File:Blue-punch-card-front-horiz.png">
-            Wikipedia
-        </a>
-    </em>
-</center>
-
-\
 Per chi crea software è importante mantenere bassi i tempi e i costi di sviluppo.\
 Le tempistiche per implementare una nuova funzionalità, o sistemare un bug, dipendono dalla codebase esistente.\
 Stimare l'impegno necessario a modificare del codice semplice e pulito risulta facile, è molto più difficile fare previsioni sul codice legacy.\
@@ -98,11 +93,13 @@ Utilizziamo anche due linguaggi di programmazione diversi: il caro vecchio C ed 
 
 ### Sequenza di Fibonacci in C
 
-{% gist 75bd7dd18ac985e32ad0278c1cc6bea2 %}
+<script src="https://gist.github.com/paoloventuri91/75bd7dd18ac985e32ad0278c1cc6bea2.js"></script>
+&nbsp;
 
 ### Sequenza di Fibonacci in C\#
 
-{% gist ea17731fdd0de434af6a80be7d5b492e %}
+<script src="https://gist.github.com/paoloventuri91/ea17731fdd0de434af6a80be7d5b492e.js"></script>
+&nbsp;
 
 I due programmi fanno la stessa cosa ma le differenze nel codice sono enormi.
 

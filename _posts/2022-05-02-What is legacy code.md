@@ -6,6 +6,8 @@ categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
 image: assets/images/what_is_legacy_code/0.jpg
 ---
 
+Questo articolo è disponibile [anche in italiano.](https://studiofarma.github.io/CGM-Innovation-Hub-Tech-Blog/Cos'%C3%A8-il-legacy-code)
+
 In software projects, as in other fields, it is important to keep low costs and development time.\
 The time of implementing a new feature or fixing a bug depends on the status of the existing codebase.\
 Estimating the effort of changing simple and clean code is easy. While it's harder to make predictions with legacy code.\

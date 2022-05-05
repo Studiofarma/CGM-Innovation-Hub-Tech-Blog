@@ -6,6 +6,8 @@ categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
 image: assets/images/what_is_legacy_code/0.jpg
 ---
 
+This article is also available [in English.](https://medium.com/cgm-innovation-hub/what-is-legacy-code-101c809aa240)
+
 Per chi crea software è importante mantenere bassi i tempi e i costi di sviluppo.\
 Le tempistiche per implementare una nuova funzionalità, o sistemare un bug, dipendono dalla codebase esistente.\
 Stimare l'impegno necessario a modificare del codice semplice e pulito risulta facile, è molto più difficile fare previsioni sul codice legacy.\

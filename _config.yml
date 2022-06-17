@@ -15,6 +15,10 @@ authors:
     name: Paolo Venturi
     display_name: Paolo Venturi
     avatar: 'assets/images/avatar/paolo-venturi.jpg'
+  luca.piccinelli:
+    name: Luca Piccinelli
+    display_name: Luca Piccinelli
+    avatar: 'assets/images/avatar/luca-piccinelli.jpg'
 
 # Plugins
 plugins:

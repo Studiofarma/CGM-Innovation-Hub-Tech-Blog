@@ -1,9 +1,10 @@
 ---
 layout: post
-title:  "Che cos'è il legacy code?"
+title: "Che cos'è il legacy code?"
 author: paolo.venturi
 categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
 image: assets/images/what_is_legacy_code/0.jpg
+excerpt: "Una definizione soggettiva"
 ---
 
 This article is also available [in English.](https://medium.com/cgm-innovation-hub/what-is-legacy-code-101c809aa240)

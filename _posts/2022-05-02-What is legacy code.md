@@ -4,6 +4,7 @@ title: "What is legacy code?"
 author: paolo.venturi
 categories: [ Legacy Code, Test, Refactoring, Software Development, Clean Code ]
 image: assets/images/what_is_legacy_code/0.jpg
+excerpt: "An Opinionated Definition"
 ---
 
 Questo articolo è disponibile [anche in italiano.](https://studiofarma.github.io/CGM-Innovation-Hub-Tech-Blog/Cos'%C3%A8-il-legacy-code)

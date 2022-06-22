@@ -7,6 +7,8 @@ image: assets/images/tests_and_legacy_code/0.jpg
 excerpt: "Come utilizzare i test automatici per migliorare la propria confidenza nel refactoring del Legacy Code"
 ---
 
+This article is also available [in English.](https://medium.com/cgm-innovation-hub/3-types-of-tests-you-need-to-know-for-legacy-code-22f96bcf5d7b)
+
 I test automatici nella produzione del software sono importantissimi: forniscono vantaggi durante e dopo lo sviluppo.
 
 Esistono molte tipologie di test diversi, oggi vedremo i più utili per lavorare con il legacy code.

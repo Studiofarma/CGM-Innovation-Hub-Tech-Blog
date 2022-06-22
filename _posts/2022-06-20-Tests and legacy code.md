@@ -7,6 +7,8 @@ image: assets/images/tests_and_legacy_code/0.jpg
 excerpt: "How automated tests let you feel more comfortable when touching Legacy Code"
 ---
 
+Questo articolo è disponibile [anche in italiano.](https://studiofarma.github.io/CGM-Innovation-Hub-Tech-Blog/I-test-ed-il-legacy-code/)
+
 Automated tests in software development are very important. They provide benefits during and after development.
 
 There are many different types of tests; today we will look at the most useful when working with legacy code.

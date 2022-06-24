@@ -203,9 +203,52 @@ What happens if we introduce noise?
 <center>
     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00028-331b046d-f59b-4a31-96de-fdb140229441?height=278.7250061035156" height="278.7250061035156" width="500"></iframe>
     <br>
-    <em> RMSE 0.70 for the mean. RMSE 0.1613 for the shift</em>
+    <em> RMSE 0.70 for the mean. RMSE 0.1596 for the shift</em>
 </center>
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00029-523019a7-7353-4697-9fbd-8ca9d39cc1d4?height=1814.9375" height="1814.9375" width="500"></iframe>
 
-We should not be surpised to see the prediction look again laggy. Indeed, the RMSE is not much better than the shifted baseline. Given a noise with an std value 0.1, we should expect a RMSE value as close as possible to 0.1.
+We should not be surprised to see that the prediction look again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect a RMSE value as close as possible to 0.1.
+
 How many lags do we need to discover the pattern hidden by the noise?
+
+Let's try to see what happens with 4 lags.
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00031-6cc4756e-5e02-4a39-9fe3-d66a1080f0de?height=1505" height="1505" width="500"></iframe>
+
+Better, but no pattern looks to have been discovered. Let's now try again with 10 and 20 lags.
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/48cd0317690142d78415875c4ce8bcd5?height=1506" height="1506" width="500"></iframe>
+
+With 10 lags the prediction gets better but it is still a bit noisy. 
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/8c3fa98a5dfb40149b842cbd60159bc8?height=1499" height="1499" width="500"></iframe>
+
+With 20 lags it finally looks that we found our pattern again. Also the average is very close to the target value of 0.1.
+
+### You promised MOAR networks!!
+
+Yes I did. So, let's define an helper function to test many different models together. Namely:
+
+ 1. Our simple MLP
+ 2. A deeper MLP with 3 hidden layers
+ 3. The same as 2, but with a Dropout layer, to see if it helps
+ 4. Some Recurrent NN:
+    - A Simple RNN
+    - A model with 2 RNN layers
+    - A Long-Short Term Memory (LSTM)
+    - A Gated Recurrent Unit (GRU)
+ 5. A Convolutional NN
+ 6. The same as 5 but with a Dropout layer.
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00035-541b39f1-5f93-44bb-b802-fb7db6e7eba7?height=3698" height="3698" width="500"></iframe>
+
+And here the results.
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00036-e8ea4ede-8b00-4278-81e2-a7868fe4a25c?height=648" height="648" width="500"></iframe>
+
+Looks that complicating the model doesn't actually improve.
+
+Will it be the same also with more complicated patterns?
+
+### Experiments with different time series.
+

@@ -29,7 +29,7 @@ No one can predict the future, but one can search in the past looking for patter
 
 Guess what is very good in finding patterns? Neural networks (NN from now on).
 
-But which type of NN? We are going to test different kind of models on some **artificially generetad time-series**. 
+But which type of NN? We are going to test different kind of models on some **artificially generated time-series**. 
 Each time-series will present a different combination of patterns, so that we can compare the different NN results.
 
 After reading, you will know:
@@ -40,7 +40,7 @@ After reading, you will know:
 ## It is easy to say "Neural Networks"
 
 There exist different kind of NN that can be applied to this use case:
- - **Multi Layer Perceptron** (MLP): the most common and simple.
+ - **Multi-Layer Perceptron** (MLP): the most common and simple.
  - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations.
  - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting.
 
@@ -293,6 +293,67 @@ Looks that in presence of more complex patterns, CNN does the best job. While th
 
 "Realistic series" presents a very large amount of noise, and all the networks have an average error higher then 7, that is quite far from the target value of 6. This suggest that in a real environment we should try to add **more information external** of the time-series, to search patterns that **correlate to the noise**. For example, if we are analysing sales of a product that has a categorical classification, adding the sales of other products of the same category may help.
 
-It is surprising that even the simple MLP always return quite good results. The same for the Deep MLP, that even outperforms CNN in the "Realistic series". 
+It is surprising that even the simple and the deep MLPs always return quite good results.
 
 The dropout level in the CNN helps in lowering the Standard Deviation.
+
+### More information from the past
+
+Is there any information coming from the series itself that we are not yet considering?
+
+Let's have a look at the auto-correlation plots:
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00066-9edd5b33-216e-43fd-a69c-685f731bd84a?height=637" height="637" width="500"></iframe>
+
+We are currently considering 20 lags, but there is some correlations with the lags older the 20.
+Instead of highering the number of lags, we could try to add past values in an aggregated form. Let's add the average values of the 4 previous lags, and of the 12 previous lags. 
+
+
+In the "Complex series" there is a sesonality that repeats about every 25 lags. Let's try to catch these kind of seasonalities by adding the averaged values (1 lag, 4 lags and 12 lags), but shifted by the number of lags that corresponds to the higher auto-correlation (after the 12th lag).
+
+<center>
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/7.png" width="800">
+    <br>
+    <em> Shift indexes. (Image by author)</em>
+</center>
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/2584c7c9ead64f889c03e90875e00724?height=335" height="335" width="500"></iframe>
+
+<center>
+    <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00067-132c5136-ac32-4b78-b6f2-1aaa9b2ac370?height=1031.453125" height="1031.453125" width="500"></iframe>
+    <br>
+    <em>Example of "Complex series" multivariate. Play with the interactive graphic, to notice how `py4` and `py12` anticipate the seasonalities of `y`</em>
+</center>
+
+We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 a features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one pooling layer.
+
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/df73c52bef014adeaba1d3db5ef6c078?height=227" height="227" width="500"></iframe>
+
+Let's have a look at the results:
+
+**Complex series results**: Noise 3. RMSE 4.008 for the mean. RMSE 4.196 for the shift
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00072-2ca620c9-2122-4d91-8225-0c3c5448a471?height=1070.921875" height="1030" width="500"></iframe>
+<br>
+
+**Realistic series results**: Noise 6. RMSE 8.14 for the mean. RMSE 11.04 for the shift
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00071-c58790cd-0469-4e7a-95ae-b39bf9589277?height=1087.796875" height="1030" width="500"></iframe>
+<br>
+
+All the models improve. In the "Realistic series" the RNN model improve a lot with LSTM becoming the best performer. The noise value is now closer to the target noise value 6. Also in the "Complex series" the LSTM gives a result comparable to the CNN, but more stable.
+
+The Deep CNN model does not give any significative improvement.
+
+## Conclusion
+
+During this analysis I demonstrate that a simple MLP can learn a sinusoid, with an input of 2 lags. 
+
+When noise is introduced, we need 20 lags in order to learn the underlying pattern. We then observed that more complicated NN (RNN and CNN) does not improve the results for a sinusoid with noise.
+
+We then observed that all the models are able to discover even more complex patterns. CNN does the best with complex patterns, and a Dropout level helps improving the result and the model stability.
+
+CNNs start having some difficulties when the series presents too many patterns and an high amount of noise. <br>
+We then demonstrated that feeding the NN with aggregated information from the past, improves a lot the results. Finally LSTM become one of the best performer, as we would have expected.
+
+If we would have to choose a model for a real world time-series, a good idea would be to choose an ensemble of CNN with a Dropout layer and an LSTM. The model should be input with at least 20 lags and some averaged values from the past.
+
+Another good idea would be to add more information external to the time-series values. The attempt is to find any measurable correlation with the noise.
+

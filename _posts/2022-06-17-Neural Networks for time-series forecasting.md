@@ -39,13 +39,13 @@ After reading, you will know:
 ## It is easy to say "Neural Networks"
 
 There exist different kind of NN that can be applied to this use case:
- - **Multi-Layer Perceptron** (MLP): the most common and simple.
- - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations.
- - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting.
+ - **Multi-Layer Perceptron** (MLP): the most common and simple. More about it [here](https://machinelearningmastery.com/neural-networks-crash-course/).
+ - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations. More about it [here](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/).
+ - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting. More about it [here](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
+
+It is not the purpose of this article going deep about each kind of network.
 
 There are also different kinds of time-series, classified by the patterns that they present. It may happen that NNs perform differently depending on the time-series features.
-
-It is not the purpose of this article going deep about each kind of network. Anyway I will leave useful links for those who want to.
 
 ## Patterns and composition of time-series
 

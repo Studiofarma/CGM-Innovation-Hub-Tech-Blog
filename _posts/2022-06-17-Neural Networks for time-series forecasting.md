@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "Neural Networks for time-series forecasting"
+title: "A Step-by-Step Walkthrough Neural Networks for Time-series Forecasting"
+excerpt: "The past sometimes repeats"
 author: luca.piccinelli
 categories: [ xxx, yyy ]
 image: assets/images/nn_for_time_series_forecasting/0.jpg
@@ -13,9 +14,7 @@ image: assets/images/nn_for_time_series_forecasting/0.jpg
     }
 </style>
 
-So you want to forecast your sales? 
-
-Or maybe you would like to know the future price of bitcoin?
+So you want to forecast your sales? Or maybe you would like to know the future price of bitcoin?
 
 In both cases, you are trying to solve a problem known as "time-series forecasting". A time-series is a set of values that varies depending on time.
 
@@ -27,7 +26,7 @@ In both cases, you are trying to solve a problem known as "time-series forecasti
 
 No one can predict the future, but one can search in the past looking for patterns, and hope that those are going to repeat.
 
-Guess what is very good in finding patterns? Neural networks (NN from now on).
+Guess what is very good in finding patterns? Neural networks (NNs from now on).
 
 But which type of NN? I am going to test different kind of models on some **artificially generated time-series**. 
 Each time-series will present a different combination of patterns, so that I can compare the different NN results.
@@ -108,7 +107,7 @@ Let's start by defining a function to generate a wave, and use it to plot a wave
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00003-7671808e-7099-4c3e-98e5-84063753d7cc?height=490" height="490"> </iframe>
 
-We will start from the most simple MLP with one hidden layer of 5 neurons, an output layer of 1 neuron, and an input layer of the same size as the input. Which input? 
+I will start from the most simple MLP with one hidden layer of 5 neurons, an output layer of 1 neuron, and an input layer of the same size as the input. Which input? 
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/5.png" width="400">
@@ -116,7 +115,7 @@ We will start from the most simple MLP with one hidden layer of 5 neurons, an ou
     <em> The simple MLP. (Image generated with <a href="http://alexlenail.me/NN-SVG/index.html">NN-SVG</a>)</em>
 </center>
 
-We want to forecast the value of the series at time `t`, let's call it `y(t)`. Then we will input to the NN the values `y(t-N)...y(t-1) for N <= t and N > 1`. We will call this input **"lags"**. At first, we want to see how the network performs, feeding it with only the first lag `y(t-1)`.
+I want to forecast the value of the series at time `t`, let's call it `y(t)`. Then I will input to the NN the values `y(t-N)...y(t-1) for N <= t and N > 1`. I will call this input **"lags"**. At first, I want to see how the network performs, feeding it with only the first lag `y(t-1)`.
 
 ### Data preparation
 
@@ -128,7 +127,7 @@ After, let's define a function to prepare our dataset. It will output a pandas D
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00009-21e38a7d-8296-47c0-859e-58a457f9b89a?height=815" height="600" width="500"></iframe>
 
-The last operation is to split the dataset into **train** and **test** sets. We will use the first 60% of the dataset to train, and the left 40% to test.
+The last operation is to split the dataset into **train** and **test** sets. I will use the first 60% of the dataset to train, and the left 40% to test.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00011-f4ebd2be-a14d-4be1-94b1-705dc5cabe42?height=546.8999938964844" height="546" width="500"></iframe>
 
@@ -153,7 +152,7 @@ I will also compare the NN prediction, with two naive predictors. The average va
 
 There is always a certain level of randomness when training a model. This makes it very difficult to understand the effects of changing the hyper-parameters. 
 
-One countermeasure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiment, we will train the models 5 times. 
+One countermeasure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiment, I will train the models 5 times. 
 
 The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training.
 
@@ -169,7 +168,7 @@ Let's train our simple MLP
 
 The result is not satisfying. The model is unstable as it as a very high std. One of the predictions is just the mean value of the training set. All the other predictions are instead the test series shifted by one lag.
 
-We can think of changing 3 things to improve the prediction:
+I can think of changing 3 things to improve the prediction:
  - the number of hidden neurons
  - the number of training epochs
  - the number of lags
@@ -198,7 +197,7 @@ We observed that a simple MLP with one hidden layer, can learn a sinusoidal func
 
 ### Let's do some noise!
 
-What happens if we introduce noise?
+What happens if I introduce noise?
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00026-c1798f3a-81c8-47e1-8c26-e30159fe827d?height=472" height="472" width="500"></iframe>
 <center>
@@ -210,7 +209,7 @@ What happens if we introduce noise?
 
 We should not be surprised to see that the prediction looks again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect an RMSE value as close as possible to 0.1.
 
-How many lags do we need to discover the pattern hidden by the noise?
+How many lags do I need to discover the pattern hidden by the noise?
 
 Let's try to see what happens with 4 lags.
 
@@ -224,7 +223,7 @@ With 10 lags the prediction gets better but it is still a bit noisy.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/8c3fa98a5dfb40149b842cbd60159bc8?height=1499" height="1499" width="500"></iframe>
 
-With 20 lags it finally looks like we found our pattern again. Also the average is very close to the target value of 0.1.
+With 20 lags it finally looks like the model found our pattern again. Also the average is very close to the target value of 0.1.
 
 ### You promised MOAR networks!!
 
@@ -247,13 +246,13 @@ And here are the results.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00036-e8ea4ede-8b00-4278-81e2-a7868fe4a25c?height=648" height="648" width="500"></iframe>
 
-Looks that complicating the model doesn't actually improve.
+Looks like complicating the model doesn't actually improve.
 
 Will it be the same also with more complicated patterns?
 
 ### Experiments with different time-series.
 
-We are going to observe the NN behavior, against a series that presents the following features:
+I am going to observe the NN behavior, against a series that presents the following features:
  - **Fading Wave**: a wave that changes its amplitude as time passes. With some noise.
  - **Complex series**: a series that is composed of 3 waves with different frequencies and amplitude, one trend, and a significative amount of noise.
  - **Realistic series**: a series that is composed of many waves, one trend, and a very high amount of noise. I call it "realistic" because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing over the others (similar peaks). <br>

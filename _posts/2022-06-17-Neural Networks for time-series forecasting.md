@@ -29,8 +29,8 @@ No one can predict the future, but one can search in the past looking for patter
 
 Guess what is very good in finding patterns? Neural networks (NN from now on).
 
-But which type of NN? We are going to test different kind of models on some **artificially generated time-series**. 
-Each time-series will present a different combination of patterns, so that we can compare the different NN results.
+But which type of NN? I am going to test different kind of models on some **artificially generated time-series**. 
+Each time-series will present a different combination of patterns, so that I can compare the different NN results.
 
 After reading, you will know:
  - how to choose a NN for time-series forecasting.
@@ -70,11 +70,11 @@ y = f1(x) * trend1(x) + ... + fN(x) * trendN(x) +
 
 Trends and seasonalities are **auto-correlated**: future values depend on past values. The noise component may be instead totally random, or it could present a correlation with some feature external to the time-series.
 
-We will conduct this analysis to test which NN is the best in finding seasonalities, trends and non-linearities.
+I will conduct this analysis to test which NN is the best in finding seasonalities, trends and non-linearities.
 
 During the experiment, the **noise will be generated randomly**. This means that there is nothing to discover that could predict the noise. It goes that our best models will present an average error very close to the amount of noise.
 
-This is ok because we want to test how good is a model in discovering the patterns hidden by the noise.
+This is ok because I want to test how good is a model in discovering the patterns hidden by the noise.
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/3.png" width="400">
@@ -134,15 +134,16 @@ The last operation is to split the dataset into **train** and **test** sets. We 
 
 ### Model Hyper-parameters and evaluation environment
 
-We will use [**Keras**](https://keras.io/) backed by [**Tensorflow**](https://www.tensorflow.org/).
+I will use [**Keras**](https://keras.io/) backed by [**Tensorflow**](https://www.tensorflow.org/).
 
-Let's consider some of the hyper-parameters that we adopt for training. We will use **Adam** as the gradient descent optimizer and **mean squared error** for measuring the training error. The **batch size** will be the default value of **32**. The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
+Let's consider some of the hyper-parameters that I adopt for training. I will use **Adam** as the gradient descent optimizer and **mean squared error** for measuring the training error. The **batch size** will be the default value of **32**. The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
 
-[Elu activation](https://stats.stackexchange.com/questions/384621/neural-networks-what-activation-function-should-i-choose-for-hidden-layers-in-r)
+I choose the [Elu](https://paperswithcode.com/method/elu) activation function because [it makes the models training more stable](https://stats.stackexchange.com/questions/384621/neural-networks-what-activation-function-should-i-choose-for-hidden-layers-in-r). I experienced the improved stability during tests not reported here for brevity.
+For the Convolutional layer I use instead the Relu activation function, because I empirically observed better performance.
 
 The prediction is going to be compared with the actual test values, measuring the error with the **root mean squared error**.
 
-We will also compare the NN prediction, with two naive predictors. The average value of the test set (not usable as a predictor, as it uses future values) and the test set shifted by 1 time lag (i.e. `y'(t+1) = y(t)`).
+I will also compare the NN prediction, with two naive predictors. The average value of the test set (not usable as a predictor, as it uses future values) and the test set shifted by 1 time lag (i.e. `y'(t+1) = y(t)`).
 
 <center>
     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00017-0e894a79-d207-40af-b456-cfcce8eacf96?height=335.96250915527344" height="335.96250915527344" width="500"></iframe>

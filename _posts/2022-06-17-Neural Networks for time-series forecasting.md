@@ -44,9 +44,9 @@ There exist different kind of NN that can be applied to this use case:
  - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations.
  - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting.
 
-Also there are different kind of time-series, classified by the patterns that they present. It may happen that NN perform differently depending on the time-series features.
+There are also different kinds of time-series, classified by the patterns that they present. It may happen that NNs perform differently depending on the time-series features.
 
-It is not in the purpose of this article going deep about each kind of network. Anyway I will leave useful links for those who want to.
+It is not the purpose of this article going deep about each kind of network. Anyway I will leave useful links for those who want to.
 
 ## Patterns and composition of time-series
 
@@ -68,13 +68,13 @@ y = f1(x) * trend1(x) + ... + fN(x) * trendN(x) +
     noise(x)
 ```
 
-Trends and seasonalities are **auto-correlated**: future values depends on past values. The noise component may be instead totally random, or it could present correlation with some feature external to the time-series.
+Trends and seasonalities are **auto-correlated**: future values depend on past values. The noise component may be instead totally random, or it could present a correlation with some feature external to the time-series.
 
-We will conduct this analysis in order to test which NN is the best in finding seasonalities, trend and their non-linearities.
+We will conduct this analysis to test which NN is the best in finding seasonalities, trends and non-linearities.
 
-During the experiment, the **noise will be generated randomly**. This means that there is nothing to discover that could predict the noise. It goes that our best models will present an average error very close the amount of noise.
+During the experiment, the **noise will be generated randomly**. This means that there is nothing to discover that could predict the noise. It goes that our best models will present an average error very close to the amount of noise.
 
-This is ok, because we want to test how good is a model in discovering the patterns hidden by the noise.
+This is ok because we want to test how good is a model in discovering the patterns hidden by the noise.
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/3.png" width="400">
@@ -91,14 +91,14 @@ This is ok, because we want to test how good is a model in discovering the patte
 ## Neural networks benefits over statistical techniques.
 
 Time-series forecasting is traditionally approached with statistical techniques, like ARMA, ARIMA, SARIMA or Facebook Prophet models.
-These requires that you have some a-priori knowledge about the series, like:
+These require that you have some a-priori knowledge about the series, like:
  - is it the series stationary or not?
  - How many different seasonalities are present in the series (SARIMA).
  - The differentiation order value to make the series stationary (ARIMA).
 
 Also, if you plan to predict only one next value, given a set of past values (many-to-one prediction), then the statical models need to be retrained every time a new value is added to the series.
 
-In contrast, NN **don't need to be retrained** so frequently and **don't require any a-priori knowledge**. In addition, it is quite straightforward to add external information that may correlate to the noise generation (multi-variate input).
+In contrast, NNs **don't need to be retrained** so frequently and **don't require any a-priori knowledge**. In addition, it is quite straightforward to add external information that may correlate to the noise generation (multi-variate input).
 
 ## Experiments
 
@@ -108,7 +108,7 @@ Let's start by defining a function to generate a wave, and use it to plot a wave
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00003-7671808e-7099-4c3e-98e5-84063753d7cc?height=490" height="490"> </iframe>
 
-We will start from a the most simple MLP with one hidden layer of 5 neurons, an output layer of 1 neuron and an input layer of the same size of the input. Which input? 
+We will start from the most simple MLP with one hidden layer of 5 neurons, an output layer of 1 neuron, and an input layer of the same size as the input. Which input? 
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/5.png" width="400">
@@ -120,7 +120,7 @@ We want to forecast the value of the series at time `t`, let's call it `y(t)`. T
 
 ### Data preparation
 
-NN better perform with dataset values ranging between `[0, 1]`. Then let's apply a scaling function.
+NNs better perform with dataset values ranging between `[0, 1]`. Then let's apply a scaling function.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00007-c560407a-e713-41a7-8789-b531fea9f331?height=456.8999938964844" height="456.8999938964844" width="500"></iframe>
 
@@ -136,13 +136,13 @@ The last operation is to split the dataset into **train** and **test** sets. We 
 
 We will use [**Keras**](https://keras.io/) backed by [**Tensorflow**](https://www.tensorflow.org/).
 
-Let's consider some of the hyper-parameters that we adopt for training. We will use **Adam** as the gradient descent optimizer, and **mean squared error** for measuring the training error. The **batch size** will be the default value **32**. The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
+Let's consider some of the hyper-parameters that we adopt for training. We will use **Adam** as the gradient descent optimizer and **mean squared error** for measuring the training error. The **batch size** will be the default value of **32**. The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
 
 [Elu activation](https://stats.stackexchange.com/questions/384621/neural-networks-what-activation-function-should-i-choose-for-hidden-layers-in-r)
 
 The prediction is going to be compared with the actual test values, measuring the error with the **root mean squared error**.
 
-We will also compare the NN prediction, with two naive predictors. The average value of the test set (not really usable as predictor, as it uses future values) and the test set shifted by 1 time lag (i.e. `y'(t+1) = y(t)`).
+We will also compare the NN prediction, with two naive predictors. The average value of the test set (not usable as a predictor, as it uses future values) and the test set shifted by 1 time lag (i.e. `y'(t+1) = y(t)`).
 
 <center>
     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00017-0e894a79-d207-40af-b456-cfcce8eacf96?height=335.96250915527344" height="335.96250915527344" width="500"></iframe>
@@ -150,11 +150,11 @@ We will also compare the NN prediction, with two naive predictors. The average v
     <em> RMSE 0.70 for the mean. RMSE 0.085 for the shift</em>
 </center>
 
-There is always a certain level of randomness when training a model. This makes very difficult understanding the effects of changing the hyper-parameters. 
+There is always a certain level of randomness when training a model. This makes it very difficult to understand the effects of changing the hyper-parameters. 
 
-One counter measure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiments we will train the models 5 times. 
+One countermeasure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiment, we will train the models 5 times. 
 
-The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. An high level of std means that the model is not stable in its training.
+The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training.
 
 ### Model training (finally 😅)
 
@@ -166,18 +166,18 @@ Let's train our simple MLP
     <em><b>The last graphic is interactive</b>. Click on the legend to toggle the predictions. Double-click it to keep only the clicked prediction</em>
 </center>
 
-The result is not satisfying. The model is unstable as it as a very high std. One of the predictions is just the mean value of the training set. All the others prediction are instead the test series shifted by one lag.
+The result is not satisfying. The model is unstable as it as a very high std. One of the predictions is just the mean value of the training set. All the other predictions are instead the test series shifted by one lag.
 
-We can think of changing 3 things in order to improve the prediction:
+We can think of changing 3 things to improve the prediction:
  - the number of hidden neurons
  - the number of training epochs
  - the number of lags
 
 **Let's reason for a while**. 
 
-It is straightforward to exclude the number of epochs, looking a the above graphics of the training losses. All the 5 trainings stopped early, after a consistent number of epochs with an error close to 0 and no improvements.
+It is straightforward to exclude the number of epochs, looking a the above graphics of the training losses. All of the 5 trainings stopped early, after a consistent number of epochs with an error close to 0 and no improvements.
 
-Now zoom-in our sinusoid, near to one of the higher peeks.
+Now zoom-in our sinusoid, near one of the higher peaks.
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/6.png" width="800">
@@ -185,7 +185,7 @@ Now zoom-in our sinusoid, near to one of the higher peeks.
     <em> Zoom-in of the sampled sin function near to 1. (Image by author)</em>
 </center>
 
-You can notice that the same values repeats both ascending and descending. The same input `y(t)` can output two different `y(t+1)` values. It doesn't exist a unique relation between input and outputs.
+You can notice that the same values repeat both ascending and descending. The same input `y(t)` can output two different `y(t+1)` values. It doesn't exist a unique relation between inputs and outputs.
 
 We can conclude that we need at least two input lags to learn the function.
 
@@ -193,7 +193,7 @@ We can conclude that we need at least two input lags to learn the function.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00022-bbb08d9b-6de2-4767-9680-24ba36cc1b65?height=1496.6624755859375" height="1496.6624755859375" width="500"></iframe>
 
-We observed that a simple MLP with one hidden layer, can learn a sinusoidal function, with a minimun input of 2 lags.
+We observed that a simple MLP with one hidden layer, can learn a sinusoidal function, with a minimum input of 2 lags.
 
 ### Let's do some noise!
 
@@ -207,7 +207,7 @@ What happens if we introduce noise?
 </center>
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00029-523019a7-7353-4697-9fbd-8ca9d39cc1d4?height=1814.9375" height="1814.9375" width="500"></iframe>
 
-We should not be surprised to see that the prediction look again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect a RMSE value as close as possible to 0.1.
+We should not be surprised to see that the prediction looks again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect an RMSE value as close as possible to 0.1.
 
 How many lags do we need to discover the pattern hidden by the noise?
 
@@ -223,11 +223,11 @@ With 10 lags the prediction gets better but it is still a bit noisy.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/8c3fa98a5dfb40149b842cbd60159bc8?height=1499" height="1499" width="500"></iframe>
 
-With 20 lags it finally looks that we found our pattern again. Also the average is very close to the target value of 0.1.
+With 20 lags it finally looks like we found our pattern again. Also the average is very close to the target value of 0.1.
 
 ### You promised MOAR networks!!
 
-Yes I did. So, let's define an helper function to test many different models together. Namely:
+Yes, I did. So, let's define a helper function to test many different models together. Namely:
 
  1. Our simple MLP
  2. A deeper MLP with 3 hidden layers
@@ -242,7 +242,7 @@ Yes I did. So, let's define an helper function to test many different models tog
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00035-541b39f1-5f93-44bb-b802-fb7db6e7eba7?height=3698" height="3698" width="500"></iframe>
 
-And here the results.
+And here are the results.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00036-e8ea4ede-8b00-4278-81e2-a7868fe4a25c?height=648" height="648" width="500"></iframe>
 
@@ -252,10 +252,10 @@ Will it be the same also with more complicated patterns?
 
 ### Experiments with different time-series.
 
-We are going to observe the NN behavior, against series that presents the following features:
+We are going to observe the NN behavior, against a series that presents the following features:
  - **Fading Wave**: a wave that changes its amplitude as time passes. With some noise.
- - **Complex series**: a series that is composed by 3 waves with different frequency and amplitude, one trend and a significative amount of noise.
- - **Realistic series**: a series that is composed by many waves, one trend and a very high amount of noise. I call it "realistic", because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing the others (similar peeks). <br>
+ - **Complex series**: a series that is composed of 3 waves with different frequencies and amplitude, one trend, and a significative amount of noise.
+ - **Realistic series**: a series that is composed of many waves, one trend, and a very high amount of noise. I call it "realistic" because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing over the others (similar peaks). <br>
 This should mimic the FT Spectrum of a real time-series of the sales of a product.
 
 **Fading Wave**: Noise 0.1. RMSE 0.1914 for the mean. RMSE 0.125 for the shift:
@@ -287,11 +287,11 @@ This should mimic the FT Spectrum of a real time-series of the sales of a produc
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00064-75aa12ea-08e3-4cc2-a7c9-34c474ec43ec?height=536" height="536" width="500"></iframe>
 <br>
 
-The models does very well on the "Fading series". Even less then the target value 0.1. We can deduce that all the models are able to discover that the pattern changes in time.
+The models do very well with the "Fading series". Even less than the target value 0.1. We can deduce that all the models can discover that the pattern changes in time.
 
-Looks that in presence of more complex patterns, CNN does the best job. While the RNN flavours are not performing better than the others. This is not what we would expect from the literature.
+Looks like in presence of more complex patterns, CNN does the best job. While the RNN flavors are not performing better than the others. This is not what we would expect from the literature.
 
-"Realistic series" presents a very large amount of noise, and all the networks have an average error higher then 7, that is quite far from the target value of 6. This suggest that in a real environment we should try to add **more information external** of the time-series, to search patterns that **correlate to the noise**. For example, if we are analysing sales of a product that has a categorical classification, adding the sales of other products of the same category may help.
+"Realistic series" presents a very large amount of noise, and all the networks have an average error higher than 7, which is quite far from the target value of 6. This suggests that in a real environment we should try to add **more information external** to the time-series, to search for patterns that **correlate to the noise**. For example, if we are analyzing sales of a product that has a categorical classification, adding the sales of other products of the same category may help.
 
 It is surprising that even the simple and the deep MLPs always return quite good results.
 
@@ -308,7 +308,7 @@ We are currently considering 20 lags, but there is some correlations with the la
 Instead of highering the number of lags, we could try to add past values in an aggregated form. Let's add the average values of the 4 previous lags, and of the 12 previous lags. 
 
 
-In the "Complex series" there is a sesonality that repeats about every 25 lags. Let's try to catch these kind of seasonalities by adding the averaged values (1 lag, 4 lags and 12 lags), but shifted by the number of lags that corresponds to the higher auto-correlation (after the 12th lag).
+In the "Complex series" there is a sessonality that repeats about every 25 lags. Let's try to catch these kinds of seasonalities by adding the averaged values (1 lag, 4 lags, and 12 lags), shifted by the number of lags that corresponds to the higher auto-correlation (after the 12th lag).
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/7.png" width="800">
@@ -324,7 +324,7 @@ In the "Complex series" there is a sesonality that repeats about every 25 lags. 
     <em>Example of "Complex series" multivariate. Play with the interactive graphic, to notice how `py4` and `py12` anticipate the seasonalities of `y`</em>
 </center>
 
-We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 a features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one pooling layer.
+We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one pooling layer.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/df73c52bef014adeaba1d3db5ef6c078?height=227" height="227" width="500"></iframe>
 
@@ -340,20 +340,20 @@ Let's have a look at the results:
 
 All the models improve. In the "Realistic series" the RNN model improve a lot with LSTM becoming the best performer. The noise value is now closer to the target noise value 6. Also in the "Complex series" the LSTM gives a result comparable to the CNN, but more stable.
 
-The Deep CNN model does not give any significative improvement.
+The Deep CNN model does not give any significant improvement.
 
 ## Conclusion
 
-During this analysis I demonstrate that a simple MLP can learn a sinusoid, with an input of 2 lags. 
+During this analysis, I demonstrate that a simple MLP can learn a sinusoid, with an input of 2 lags. 
 
-When noise is introduced, we need 20 lags in order to learn the underlying pattern. We then observed that more complicated NN (RNN and CNN) does not improve the results for a sinusoid with noise.
+When noise is introduced, we need 20 lags to learn the underlying pattern. We then observed that more complicated NN (RNN and CNN) does not improve the results for a sinusoid with noise.
 
-We then observed that all the models are able to discover even more complex patterns. CNN does the best with complex patterns, and a Dropout level helps improving the result and the model stability.
+We then observed that all the models can discover even more complex patterns. CNN does the best with complex patterns, and a Dropout level helps improve the result and the model stability.
 
-CNNs start having some difficulties when the series presents too many patterns and an high amount of noise. <br>
-We then demonstrated that feeding the NN with aggregated information from the past, improves a lot the results. Finally LSTM become one of the best performer, as we would have expected.
+CNNs start having some difficulties when the series presents too many patterns and a high amount of noise. <br>
+We then demonstrated that feeding the NN with aggregated information from the past improves a lot the results. Finally, LSTM become one of the best performers, as we would have expected.
 
-If we would have to choose a model for a real world time-series, a good idea would be to choose an ensemble of CNN with a Dropout layer and an LSTM. The model should be input with at least 20 lags and some averaged values from the past.
+If we would have to choose a model for a real-world time-series, a good idea would be to choose an ensemble of CNN with a Dropout layer and an LSTM. The model should be input with at least 20 lags and some averaged values from the past.
 
 Another good idea would be to add more information external to the time-series values. The attempt is to find any measurable correlation with the noise.
 

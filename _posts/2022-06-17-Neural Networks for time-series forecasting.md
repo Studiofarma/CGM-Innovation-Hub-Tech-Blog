@@ -250,5 +250,49 @@ Looks that complicating the model doesn't actually improve.
 
 Will it be the same also with more complicated patterns?
 
-### Experiments with different time series.
+### Experiments with different time-series.
 
+We are going to observe the NN behavior, against series that presents the following features:
+ - **Fading Wave**: a wave that changes its amplitude as time passes. With some noise.
+ - **Complex series**: a series that is composed by 3 waves with different frequency and amplitude, one trend and a significative amount of noise.
+ - **Realistic series**: a series that is composed by many waves, one trend and a very high amount of noise. I call it "realistic", because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing the others (similar peeks). <br>
+This should mimic the FT Spectrum of a real time-series of the sales of a product.
+
+**Fading Wave**: Noise 0.1. RMSE 0.1914 for the mean. RMSE 0.125 for the shift:
+<center>
+     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/96c8cc591eec426a9479e1b2ff137b72?height=827.953125" height="827.953125" width="500"></iframe>
+    <br>
+</center>
+<br>
+**Complex Series**: Noise 3. RMSE 4.008 for the mean. RMSE 4.196 for the shift:
+<center>
+     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00053-6db8028e-dfc6-4bc1-b8f8-3b7891f0b407?height=703.140625" height="703.140625" width="500"></iframe>
+    <br>
+</center>
+<br>
+**Realistic series**: Noise 6. RMSE 8.14 for the mean. RMSE 11.04 for the shift:
+<center>
+     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00063-f4997b4c-b8b7-4201-875f-ec2df3e85516?height=793.140625" height="793.140625" width="500"></iframe>
+    <br>
+</center>
+<br>   
+
+**Fading Wave results**: Noise 0.1. RMSE 0.1914 for the mean. RMSE 0.125 for the shift
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00047-f6e324d3-26dd-455d-823b-161b0ea81f9b?height=536" height="500" width="500"></iframe>
+<br>
+**Complex series results**: Noise 3. RMSE 4.008 for the mean. RMSE 4.196 for the shift
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00054-dcd4a0d3-7edd-496e-a38b-2c12868bc758?height=536" height="536" width="500"></iframe>
+<br>
+**Realistic series results**: Noise 6. RMSE 8.14 for the mean. RMSE 11.04 for the shift
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00064-75aa12ea-08e3-4cc2-a7c9-34c474ec43ec?height=536" height="536" width="500"></iframe>
+<br>
+
+The models does very well on the "Fading series". Even less then the target value 0.1. We can deduce that all the models are able to discover that the pattern changes in time.
+
+Looks that in presence of more complex patterns, CNN does the best job. While the RNN flavours are not performing better than the others. This is not what we would expect from the literature.
+
+"Realistic series" presents a very large amount of noise, and all the networks have an average error higher then 7, that is quite far from the target value of 6. This suggest that in a real environment we should try to add **more information external** of the time-series, to search patterns that **correlate to the noise**. For example, if we are analysing sales of a product that has a categorical classification, adding the sales of other products of the same category may help.
+
+It is surprising that even the simple MLP always return quite good results. The same for the Deep MLP, that even outperforms CNN in the "Realistic series". 
+
+The dropout level in the CNN helps in lowering the Standard Deviation.

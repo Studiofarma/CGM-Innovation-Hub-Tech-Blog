@@ -232,7 +232,7 @@ Yes, I did. So, let's define a helper function to test many different models tog
 
  1. Our simple MLP
  2. A deeper MLP with 3 hidden layers
- 3. The same as 2, but with a Dropout layer, to see if it helps
+ 3. The same as 2, but with a [Dropout layer](https://machinelearningmastery.com/dropout-for-regularizing-deep-neural-networks/), to see if it helps
  4. Some Recurrent NN:
     - A Simple RNN
     - A model with 2 stacked RNN layers

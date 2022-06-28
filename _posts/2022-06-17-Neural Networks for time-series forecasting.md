@@ -32,13 +32,13 @@ But which type of NN? I am going to test different kind of models on some **arti
 Each time-series will present a different combination of patterns, so that I can compare the different NN results.
 
 After reading, you will know:
- - how to choose a NN for time-series forecasting.
- - How many past samples are needed to discover a pattern.
- - Which is the impact of noise on the prediction quality.
+ - how to choose a NN for time-series forecasting;
+ - how many past samples are needed to discover a pattern;
+ - which is the impact of noise on the prediction quality;
 
 ## It is easy to say "Neural Networks"
 
-There exist different kind of NN that can be applied to this use case:
+There exist different kind of NN that can be applied to this use case.
  - **Multi-Layer Perceptron** (MLP): the most common and simple. More about it [here](https://machinelearningmastery.com/neural-networks-crash-course/).
  - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations. More about it [here](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/).
  - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting. More about it [here](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
@@ -49,7 +49,7 @@ There are also different kinds of time-series, classifiable by the patterns that
 
 ## Patterns and composition of time-series
 
-Time-series presents mainly two types of patterns:
+Time-series presents mainly two types of patterns.
  - **Seasonality**: the values periodically repeat.
  - **Trend**: the values continue to increase or decrease.
 
@@ -89,11 +89,12 @@ This is ok because I want to test how good is a model in discovering the pattern
 
 ## Neural networks benefits over statistical techniques.
 
-Time-series forecasting is traditionally approached with statistical techniques, like ARMA, ARIMA, SARIMA or Facebook Prophet models.
-These require that you have some a-priori knowledge about the series, like:
- - is it the series stationary or not? (More about stationarity [here](https://machinelearningmastery.com/time-series-data-stationary-python/))
+Time-series forecasting is traditionally approached with statistical techniques, like ARMA (Auto-Regressive Moving Average), ARIMA (Auto-Regressive Integrated Moving Average), SARIMA (Seasonal Auto-Regressive Integrated Moving Average) or Facebook Prophet models.
+These require that you have some a-priori knowledge about the series.
+ - Is it the series stationary or not? (More about stationarity [here](https://machinelearningmastery.com/time-series-data-stationary-python/))
  - How many different seasonalities are present in the series ([SARIMA](https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/)).
  - The differentiation order value to make the series stationary ([ARIMA](https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/)).
+ - Other...
 
 Also, if you plan to predict only one next value, given a set of past values ([many-to-one prediction](https://wandb.ai/ayush-thakur/dl-question-bank/reports/LSTM-RNN-in-Keras-Examples-of-One-to-Many-Many-to-One-Many-to-Many---VmlldzoyMDIzOTM)), then the statical models need to be retrained every time a new value is added to the series.
 
@@ -108,6 +109,7 @@ You can also download and alternative version from [here](../material/nn_for_tim
 Let's start by defining a function to generate a wave, and use it to plot a wave of period 10 with 520 samples and amplitude 1.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00003-7671808e-7099-4c3e-98e5-84063753d7cc?height=490" height="490"> </iframe>
+<br>
 
 I will start from the most simple MLP with one hidden layer of 5 neurons, an output layer of 1 neuron, and an input layer of the same size as the input. Which input? 
 
@@ -124,14 +126,17 @@ I want to forecast the value of the series at time `t`, let's call it `y(t)`. Th
 NNs better perform with dataset values ranging between `[0, 1]` (as explained [here](https://machinelearningmastery.com/how-to-improve-neural-network-stability-and-modeling-performance-with-data-scaling/)). Then let's apply a scaling function.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00007-c560407a-e713-41a7-8789-b531fea9f331?height=456.8999938964844" height="456.8999938964844" width="500"></iframe>
+<br>
 
 After, let's define a function to prepare our dataset. It will output a [pandas DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) where each row is an input sample, and the columns are the lags together with the actual output value.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00009-21e38a7d-8296-47c0-859e-58a457f9b89a?height=815" height="600" width="500"></iframe>
+<br>
 
 The last operation is to split the dataset into **train** and **test** sets. I will use the first 60% of the dataset to train, and the left 40% to test.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00011-f4ebd2be-a14d-4be1-94b1-705dc5cabe42?height=546.8999938964844" height="546" width="500"></iframe>
+<br>
 
 ### Model Hyper-parameters and evaluation environment
 
@@ -152,6 +157,7 @@ I will also compare the NN prediction, with two naive predictors. The average va
     <br>
     <em> RMSE 0.70 for the mean. RMSE 0.085 for the shift</em>
 </center>
+<br>
 
 There is always a certain level of randomness when training a model. This makes it very difficult to understand the effects of changing the hyper-parameters. 
 
@@ -168,6 +174,7 @@ Let's train our simple MLP
     <br>
     <em><b>The last graphic is interactive</b>. Click on the legend to toggle the predictions. Double-click it to keep only the clicked prediction</em>
 </center>
+<br>
 
 The result is not satisfying. The model is unstable as it has a very high std value. The predictions are just the test series shifted by one lag.
 
@@ -187,14 +194,17 @@ Now zoom-in our sinusoid, near one of the higher peaks.
     <br>
     <em> Zoom-in of the sampled sin function near to 1. (Image by author)</em>
 </center>
+<br>
 
 You can notice that the same values repeat both ascending and descending. The same input `y(t)` can output two different `y(t+1)` values. It doesn't exist a unique relation between inputs and outputs.
 
 We can conclude that we need at least two input lags to learn the function.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00021-ceef45b9-20cc-44e5-bad9-ee607b47e2f4?height=653" height="653" width="500"></iframe>
+<br>
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00022-bbb08d9b-6de2-4767-9680-24ba36cc1b65?height=1496.6624755859375" height="1496.6624755859375" width="500"></iframe>
+<br>
 
 We observed that a simple MLP with one hidden layer, can learn a sinusoidal function, with a minimum input of 2 lags.
 
@@ -203,12 +213,15 @@ We observed that a simple MLP with one hidden layer, can learn a sinusoidal func
 What happens if I introduce noise?
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00026-c1798f3a-81c8-47e1-8c26-e30159fe827d?height=472" height="472" width="500"></iframe>
+<br>
 <center>
     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00028-331b046d-f59b-4a31-96de-fdb140229441?height=278.7250061035156" height="278.7250061035156" width="500"></iframe>
     <br>
     <em> RMSE 0.70 for the mean. RMSE 0.1596 for the shift</em>
+    <br>
 </center>
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00029-523019a7-7353-4697-9fbd-8ca9d39cc1d4?height=1814.9375" height="1814.9375" width="500"></iframe>
+<br>
 
 We should not be surprised to see that the prediction looks again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect an RMSE value as close as possible to 0.1.
 
@@ -217,14 +230,17 @@ How many lags do we need to discover the pattern hidden by the noise?
 Let's try to see what happens with 4 lags.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00031-6cc4756e-5e02-4a39-9fe3-d66a1080f0de?height=1505" height="1505" width="500"></iframe>
+<br>
 
 Better, but no pattern looks to have been discovered. Let's now try again with 10 and 20 lags.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/48cd0317690142d78415875c4ce8bcd5?height=1506" height="1506" width="500"></iframe>
+<br>
 
 With 10 lags the prediction gets better but it is still a bit noisy. 
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/8c3fa98a5dfb40149b842cbd60159bc8?height=1499" height="1499" width="500"></iframe>
+<br>
 
 With 20 lags it finally looks like the model found our pattern again. Also the average is very close to the target value of 0.1.
 
@@ -244,10 +260,12 @@ Yes, I did. So, let's define a helper function to test many different models tog
  6. The same as 5 but with a Dropout layer.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00035-541b39f1-5f93-44bb-b802-fb7db6e7eba7?height=3698" height="3698" width="500"></iframe>
+<br>
 
 And here are the results.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00036-e8ea4ede-8b00-4278-81e2-a7868fe4a25c?height=648" height="648" width="500"></iframe>
+<br>
 
 Looks like complicating the model doesn't actually improve.
 
@@ -306,6 +324,7 @@ Is there any information coming from the series itself that we are not yet consi
 
 Let's have a look at the auto-correlation plots:
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00066-9edd5b33-216e-43fd-a69c-685f731bd84a?height=637" height="637" width="500"></iframe>
+<br>
 
 We are currently considering 20 lags, but there is some correlations with the lags older the 20.
 Instead of highering the number of lags, we could try to add past values in an aggregated form. Let's add the average values of the 4 previous lags, and of the 12 previous lags. 
@@ -318,18 +337,22 @@ In the "Complex series" there is a seasonality that repeats about every 25 lags.
     <br>
     <em> Shift indexes. (Image by author)</em>
 </center>
+<br>
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/2584c7c9ead64f889c03e90875e00724?height=335" height="335" width="500"></iframe>
+<br>
 
 <center>
     <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00067-132c5136-ac32-4b78-b6f2-1aaa9b2ac370?height=1031.453125" height="1031.453125" width="500"></iframe>
     <br>
     <em>Example of "Complex series" multivariate. Play with the interactive graphic, to notice how `py4` and `py12` anticipate the seasonalities of `y`</em>
 </center>
+<br>
 
 We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one [pooling layer](https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/).
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/92288292c0b64493b9dbd9396675d6b8?height=227" height="227" width="500"></iframe>
+<br>
 
 Let's have a look at the results:
 

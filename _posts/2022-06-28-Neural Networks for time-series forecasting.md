@@ -86,6 +86,7 @@ This is ok because I want to test how good is a model in discovering the pattern
     <br>
     <em> Examples of seasonality + trend + noise. (Image by author)</em>
 </center>
+<br>
 
 ## Neural networks benefits over statistical techniques.
 
@@ -118,6 +119,7 @@ I will start from the most simple MLP with one hidden layer of 5 neurons, an out
     <br>
     <em> The simple MLP. (Image generated with <a href="http://alexlenail.me/NN-SVG/index.html">NN-SVG</a>)</em>
 </center>
+<br>
 
 I want to forecast the value of the series at time `t`, let's call it `y(t)`. Then I will input to the NN the values `y(t-N)...y(t-1) for N <= t and N > 1`. I will call this input **"lags"**. I want to see how the network performs, feeding it with only the first lag `y(t-1)`.
 
@@ -163,7 +165,7 @@ There is always a certain level of randomness when training a model. This makes 
 
 One countermeasure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiment, I will train the models 5 times. 
 
-The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training. (i.e. Different trainings may result models that performs very differently.)
+The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training. (i.e. Different trainings may result in models that performs very differently.)
 
 ### Model training (finally 😅)
 
@@ -185,7 +187,7 @@ I can think of changing 3 things to improve the prediction:
 
 **Let's reason for a while**. 
 
-It is straightforward to exclude the number of epochs, looking a the above graphics of the training losses. All of the 5 trainings stopped early, after a consistent number of epochs with an error close to 0 and no improvements.
+It is straightforward to exclude the number of epochs, looking at the above graphics of the training losses. All of the 5 trainings stopped early, after a consistent number of epochs with an error close to 0 and no improvements.
 
 Now zoom-in our sinusoid, near one of the higher peaks.
 
@@ -273,7 +275,7 @@ Will it be the same also with more complicated patterns?
 
 ### Experiments with different time-series.
 
-I am going to observe the NN behavior, against serieses that present the following features:
+I am going to observe the NN behavior, against series that present the following features:
  - **Fading Wave**: a wave that changes its amplitude as time passes. With some noise.
  - **Complex series**: a series that is composed of 3 waves with different frequencies and amplitude, one trend, and a significative amount of noise.
  - **Realistic series**: a series that is composed of many waves, one trend, and a very high amount of noise. I call it "realistic" because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing over the others (similar peaks). <br>

@@ -103,6 +103,8 @@ In contrast, NNs **don't need to be retrained** so frequently and **don't requir
 
 You can find the entire notebook [here](https://deepnote.com/workspace/luca-piccinelli-37f2-d1557232-c701-4528-93e2-7d7a65936144/project/Untitled-project-6c406c94-84cc-438d-a6d3-e329a4227d17/%2Fnn_for_time_series_forecasting.ipynb)
 
+You can also download and alternative version from [here](../material/nn_for_time_series_forecasting/nn_for_time_series_forecasting.ipynb). Install this [requirements.txt](../material/nn_for_time_series_forecasting/requirements.txt) if you want to run it locally.
+
 Let's start by defining a function to generate a wave, and use it to plot a wave of period 10 with 520 samples and amplitude 1.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00003-7671808e-7099-4c3e-98e5-84063753d7cc?height=490" height="490"> </iframe>

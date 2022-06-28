@@ -329,7 +329,7 @@ In the "Complex series" there is a seasonality that repeats about every 25 lags.
 
 We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one [pooling layer](https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/).
 
-<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/df73c52bef014adeaba1d3db5ef6c078?height=227" height="227" width="500"></iframe>
+<iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/92288292c0b64493b9dbd9396675d6b8?height=227" height="227" width="500"></iframe>
 
 Let's have a look at the results:
 

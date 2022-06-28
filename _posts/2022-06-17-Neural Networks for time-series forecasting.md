@@ -253,7 +253,7 @@ Will it be the same also with more complicated patterns?
 
 ### Experiments with different time-series.
 
-I am going to observe the NN behavior, against a series that presents the following features:
+I am going to observe the NN behavior, against serieses that present the following features:
  - **Fading Wave**: a wave that changes its amplitude as time passes. With some noise.
  - **Complex series**: a series that is composed of 3 waves with different frequencies and amplitude, one trend, and a significative amount of noise.
  - **Realistic series**: a series that is composed of many waves, one trend, and a very high amount of noise. I call it "realistic" because it is built looking at the spectrum of its Fourier Transform. The purpose is that it presents many components, with no one clearly prevailing over the others (similar peaks). <br>
@@ -309,7 +309,7 @@ We are currently considering 20 lags, but there is some correlations with the la
 Instead of highering the number of lags, we could try to add past values in an aggregated form. Let's add the average values of the 4 previous lags, and of the 12 previous lags. 
 
 
-In the "Complex series" there is a sessonality that repeats about every 25 lags. Let's try to catch these kinds of seasonalities by adding the averaged values (1 lag, 4 lags, and 12 lags), shifted by the number of lags that corresponds to the higher auto-correlation (after the 12th lag).
+In the "Complex series" there is a seasonality that repeats about every 25 lags. Let's try to catch these kinds of seasonalities by adding the averaged values (1 lag, 4 lags, and 12 lags), shifted by the number of lags that corresponds to the higher auto-correlation (after the 12th lag).
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/7.png" width="800">
@@ -325,7 +325,7 @@ In the "Complex series" there is a sessonality that repeats about every 25 lags.
     <em>Example of "Complex series" multivariate. Play with the interactive graphic, to notice how `py4` and `py12` anticipate the seasonalities of `y`</em>
 </center>
 
-We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one pooling layer.
+We now adapt the CNN to be 2D CNN instead of 1D, as now we are passing 20 lags for each sample, with 6 features vector each. We also add one more model: a CNN with 2 Convolutional layers, separated by one [pooling layer](https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/).
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/df73c52bef014adeaba1d3db5ef6c078?height=227" height="227" width="500"></iframe>
 

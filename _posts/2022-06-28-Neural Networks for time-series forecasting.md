@@ -3,7 +3,7 @@ layout: post
 title: "A Step-by-Step Walkthrough Neural Networks for Time-series Forecasting"
 excerpt: "The past sometimes repeats"
 author: luca.piccinelli
-categories: [ xxx, yyy ]
+categories: [ Data Science, Machine Learning, Time Series, Artificial Intelligence, Neural Networks]
 image: assets/images/nn_for_time_series_forecasting/0.jpg
 ---
 

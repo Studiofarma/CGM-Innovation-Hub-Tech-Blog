@@ -178,7 +178,7 @@ Let's train our simple MLP
 </center>
 <br>
 
-The result is not satisfying. The model is unstable as it has a very high std value. The predictions are just the test series shifted by one lag.
+The result is not satisfying. The predictions are just the test series shifted by one lag.
 
 I can think of changing 3 things to improve the prediction:
  - the number of hidden neurons;

@@ -14,6 +14,11 @@ image: assets/images/nn_for_time_series_forecasting/0.jpg
     }
 </style>
 
+<center>
+    <em>Cover image by <a href="https://unsplash.com/@ayadighaith">Ayadi Ghaith</a> on Unsplash.</em>
+</center>
+<br>
+
 So you want to forecast your sales? Or maybe you would like to know the future price of bitcoin?
 
 In both cases, you are trying to solve a problem known as "time-series forecasting". A time-series is a sorted set of values that varies depending on time.

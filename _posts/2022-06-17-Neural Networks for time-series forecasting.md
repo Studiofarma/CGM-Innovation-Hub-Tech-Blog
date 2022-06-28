@@ -16,7 +16,7 @@ image: assets/images/nn_for_time_series_forecasting/0.jpg
 
 So you want to forecast your sales? Or maybe you would like to know the future price of bitcoin?
 
-In both cases, you are trying to solve a problem known as "time-series forecasting". A time-series is a set of values that varies depending on time.
+In both cases, you are trying to solve a problem known as "time-series forecasting". A time-series is a sorted set of values that varies depending on time.
 
 <center>
     <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nn_for_time_series_forecasting/1.png" width="400">
@@ -43,9 +43,9 @@ There exist different kind of NN that can be applied to this use case:
  - **Recurrent Neural Network** (RNN): in literature, the most suited to time-series forecasting. They combine the information of the current observation, with the information of the previous observations. More about it [here](https://machinelearningmastery.com/an-introduction-to-recurrent-neural-networks-and-the-math-that-powers-them/).
  - **Convolutional Neural Network** (CNN): usually applied for Computer Vision, they are raising also for time-series forecasting. More about it [here](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
 
-It is not the purpose of this article going deep about each kind of network.
+It is not the purpose of this article going deep about each kind of network. Anyway, useful links are left for the reader that want to.
 
-There are also different kinds of time-series, classified by the patterns that they present. It may happen that NNs perform differently depending on the time-series features.
+There are also different kinds of time-series, classifiable by the patterns that they present. It may happen that NNs perform differently depending on the time-series features.
 
 ## Patterns and composition of time-series
 
@@ -91,11 +91,11 @@ This is ok because I want to test how good is a model in discovering the pattern
 
 Time-series forecasting is traditionally approached with statistical techniques, like ARMA, ARIMA, SARIMA or Facebook Prophet models.
 These require that you have some a-priori knowledge about the series, like:
- - is it the series stationary or not?
- - How many different seasonalities are present in the series (SARIMA).
- - The differentiation order value to make the series stationary (ARIMA).
+ - is it the series stationary or not? (More about stationarity [here](https://machinelearningmastery.com/time-series-data-stationary-python/))
+ - How many different seasonalities are present in the series ([SARIMA](https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/)).
+ - The differentiation order value to make the series stationary ([ARIMA](https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/)).
 
-Also, if you plan to predict only one next value, given a set of past values (many-to-one prediction), then the statical models need to be retrained every time a new value is added to the series.
+Also, if you plan to predict only one next value, given a set of past values ([many-to-one prediction](https://wandb.ai/ayush-thakur/dl-question-bank/reports/LSTM-RNN-in-Keras-Examples-of-One-to-Many-Many-to-One-Many-to-Many---VmlldzoyMDIzOTM)), then the statical models need to be retrained every time a new value is added to the series.
 
 In contrast, NNs **don't need to be retrained** so frequently and **don't require any a-priori knowledge**. In addition, it is quite straightforward to add external information that may correlate to the noise generation (multi-variate input).
 
@@ -115,15 +115,15 @@ I will start from the most simple MLP with one hidden layer of 5 neurons, an out
     <em> The simple MLP. (Image generated with <a href="http://alexlenail.me/NN-SVG/index.html">NN-SVG</a>)</em>
 </center>
 
-I want to forecast the value of the series at time `t`, let's call it `y(t)`. Then I will input to the NN the values `y(t-N)...y(t-1) for N <= t and N > 1`. I will call this input **"lags"**. At first, I want to see how the network performs, feeding it with only the first lag `y(t-1)`.
+I want to forecast the value of the series at time `t`, let's call it `y(t)`. Then I will input to the NN the values `y(t-N)...y(t-1) for N <= t and N > 1`. I will call this input **"lags"**. I want to see how the network performs, feeding it with only the first lag `y(t-1)`.
 
 ### Data preparation
 
-NNs better perform with dataset values ranging between `[0, 1]`. Then let's apply a scaling function.
+NNs better perform with dataset values ranging between `[0, 1]` (as explained [here](https://machinelearningmastery.com/how-to-improve-neural-network-stability-and-modeling-performance-with-data-scaling/)). Then let's apply a scaling function.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00007-c560407a-e713-41a7-8789-b531fea9f331?height=456.8999938964844" height="456.8999938964844" width="500"></iframe>
 
-After, let's define a function to prepare our dataset. It will output a pandas DataFrame where each row is an input sample, and the columns are the lags together with the actual output value.
+After, let's define a function to prepare our dataset. It will output a [pandas DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) where each row is an input sample, and the columns are the lags together with the actual output value.
 
 <iframe title="Embedded cell output" src="https://embed.deepnote.com/6c406c94-84cc-438d-a6d3-e329a4227d17/59956a37-f3dd-4f96-a563-7469f95ced7f/00009-21e38a7d-8296-47c0-859e-58a457f9b89a?height=815" height="600" width="500"></iframe>
 
@@ -135,10 +135,11 @@ The last operation is to split the dataset into **train** and **test** sets. I w
 
 I will use [**Keras**](https://keras.io/) backed by [**Tensorflow**](https://www.tensorflow.org/).
 
-Let's consider some of the hyper-parameters that I adopt for training. I will use **Adam** as the gradient descent optimizer and **mean squared error** for measuring the training error. The **batch size** will be the default value of **32**. The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
+Let's consider some of the hyper-parameters that I adopt for training. I will use [**Adam**](https://machinelearningmastery.com/adam-optimization-algorithm-for-deep-learning/) as the [gradient descent](https://towardsdatascience.com/gradient-descent-algorithm-a-deep-dive-cf04e8115f21) optimizer and **mean squared error** for measuring the training error. The **batch size** will be the default value of **32** (empirically choosen). The model will train for a maximum of **200 epochs**, **early stopped** if no further improvement is observed for 30 consecutive epochs.
 
-I choose the [Elu](https://paperswithcode.com/method/elu) activation function because [it makes the models training more stable](https://stats.stackexchange.com/questions/384621/neural-networks-what-activation-function-should-i-choose-for-hidden-layers-in-r). I experienced the improved stability during tests not reported here for brevity.
-For the Convolutional layer I use instead the Relu activation function, because I empirically observed better performance.
+I choose the [Elu](https://paperswithcode.com/method/elu) activation function because [it makes the models training more stable](https://stats.stackexchange.com/questions/384621/neural-networks-what-activation-function-should-i-choose-for-hidden-layers-in-r). I experienced the improved stability during tests, not reported here for brevity.
+For the convolutional layer I use instead the [Relu](https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/) activation function, because I empirically observed better performance. 
+The output [has a linear activation function](https://machinelearningmastery.com/choose-an-activation-function-for-deep-learning/).
 
 The prediction is going to be compared with the actual test values, measuring the error with the **root mean squared error**.
 
@@ -154,7 +155,7 @@ There is always a certain level of randomness when training a model. This makes 
 
 One countermeasure [is to train the same model many times and then average the results](https://machinelearningmastery.com/reproducible-results-neural-networks-keras/). In this experiment, I will train the models 5 times. 
 
-The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training.
+The quality of the model is given by it's average *RMSE* and the *Standard Deviation* (std) of the errors. A high quantity of std means that the model is not stable in its training. (i.e. Different trainings may result models that performs very differently.)
 
 ### Model training (finally 😅)
 
@@ -166,7 +167,7 @@ Let's train our simple MLP
     <em><b>The last graphic is interactive</b>. Click on the legend to toggle the predictions. Double-click it to keep only the clicked prediction</em>
 </center>
 
-The result is not satisfying. The model is unstable as it as a very high std. One of the predictions is just the mean value of the training set. All the other predictions are instead the test series shifted by one lag.
+The result is not satisfying. The model is unstable as it has a very high std value. The predictions are just the test series shifted by one lag.
 
 I can think of changing 3 things to improve the prediction:
  - the number of hidden neurons
@@ -209,7 +210,7 @@ What happens if I introduce noise?
 
 We should not be surprised to see that the prediction looks again laggy. Indeed, the RMSE is even worst than the shifted baseline. Given a noise with an std value 0.1, we should expect an RMSE value as close as possible to 0.1.
 
-How many lags do I need to discover the pattern hidden by the noise?
+How many lags do we need to discover the pattern hidden by the noise?
 
 Let's try to see what happens with 4 lags.
 
@@ -234,9 +235,9 @@ Yes, I did. So, let's define a helper function to test many different models tog
  3. The same as 2, but with a Dropout layer, to see if it helps
  4. Some Recurrent NN:
     - A Simple RNN
-    - A model with 2 RNN layers
-    - A Long-Short Term Memory (LSTM)
-    - A Gated Recurrent Unit (GRU)
+    - A model with 2 stacked RNN layers
+    - A Long-Short Term Memory ([LSTM](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)). A special kind of RNN that can keep information more distant in the past.
+    - A Gated Recurrent Unit ([GRU](https://towardsdatascience.com/illustrated-guide-to-lstms-and-gru-s-a-step-by-step-explanation-44e9eb85bf21)). Has similar properties of an LSTM, but requires less computation effort.
  5. A Convolutional NN
  6. The same as 5 but with a Dropout layer.
 

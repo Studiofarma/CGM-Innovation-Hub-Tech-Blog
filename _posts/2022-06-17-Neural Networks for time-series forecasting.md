@@ -352,7 +352,7 @@ When noise is introduced, we need 20 lags to learn the underlying pattern. We th
 We then observed that all the models can discover even more complex patterns. CNN does the best with complex patterns, and a Dropout level helps improve the result and the model stability.
 
 CNNs start having some difficulties when the series presents too many patterns and a high amount of noise. <br>
-We then demonstrated that feeding the NN with aggregated information from the past improves a lot the results. Finally, LSTM become one of the best performers, as we would have expected.
+I demonstrated that feeding the NN with aggregated information from the past improves a lot the results. Finally, LSTM become one of the best performers, as we would have expected.
 
 If we would have to choose a model for a real-world time-series, a good idea would be to choose an ensemble of CNN with a Dropout layer and an LSTM. The model should be input with at least 20 lags and some averaged values from the past.
 

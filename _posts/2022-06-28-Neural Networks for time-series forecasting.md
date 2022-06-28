@@ -181,9 +181,9 @@ Let's train our simple MLP
 The result is not satisfying. The model is unstable as it has a very high std value. The predictions are just the test series shifted by one lag.
 
 I can think of changing 3 things to improve the prediction:
- - the number of hidden neurons
- - the number of training epochs
- - the number of lags
+ - the number of hidden neurons;
+ - the number of training epochs;
+ - the number of lags.
 
 **Let's reason for a while**. 
 

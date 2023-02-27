@@ -26,7 +26,7 @@ The entire code of this experiments is here: [https://github.com/Studiofarma/web
 <br>
 
 WebSocket is a communication protocol that supplies two-way communication between client and server.
-It builds over HTTP, but it is contrast with the client-server model, where a server cannot initiate a message
+It builds over HTTP, but it is in contrast with the client-server model, where a server cannot initiate a message
 transfer to a client. When a client opens a WebSocket, the server can push back messages at any time.
 With the standard HTTP commands, a server can only respond to a request from a client.
 
@@ -65,7 +65,6 @@ The system will have many clients exchanging messages with the server.
 In both **easy** and **hard** modes, we must pay attention to the frequency of messages from the same user.
 If the delay is too little, the server will be unable to deal with the overload.
 
-In these scenarios, if the delay between consecutive messages from the same user is too little, the server will be unable to deal with the overload.
 To avoid it, I impose a delay  to every user  between consecutive messages. This also matches with a real-world-use case.
 I modeled the delay on a Gaussian distribution. It has a **mean value of 5 sec**. and **standard deviation of 2 sec**.
 

@@ -19,6 +19,10 @@ authors:
     name: Luca Piccinelli
     display_name: Luca Piccinelli
     avatar: 'assets/images/avatar/luca-piccinelli.jpg'
+  matteo.ricci:
+    name: Matteo Ricci
+    display_name: Matteo Ricci
+    avatar: 'assets/images/avatar/matteo-ricci.PNG'   
 
 # Plugins
 plugins:

@@ -17,6 +17,9 @@ group :jekyll_plugins do
     gem 'jekyll-archives'
     gem 'kramdown'
     gem 'rouge'
+    gem 'sass-embedded'
+    gem 'http-parser'
+    gem 'google-protobuf'
 end
 
 gem "webrick", "~> 1.7"

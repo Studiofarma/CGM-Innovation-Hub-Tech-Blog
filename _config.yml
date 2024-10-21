@@ -23,6 +23,10 @@ authors:
     name: Matteo Ricci
     display_name: Matteo Ricci
     avatar: 'assets/images/avatar/matteo-ricci.PNG'   
+  francesco.zubani:
+    name: Francesco Zubani
+    display_name: Francesco Zubani
+    avatar: 'assets/images/avatar/francesco-zubani.png'   
 
 # Plugins
 plugins:

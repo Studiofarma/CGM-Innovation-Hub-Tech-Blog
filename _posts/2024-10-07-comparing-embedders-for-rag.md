@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Comparing Embedders for Retrieval Augmented Generation"
+title: "Which embedder best fits your language?"
 excerpt: "How not to get lost in multidimensional space"
 author: francesco.zubani
 
-categories: [ Data Science, Machine Learning, Enmbeddings, Artificial Intelligence, RAG]
-image: assets/images//comparing_embedders_for_rag/cover.png
+categories: [ Data Science, Machine Learning, Enmbeddings, Artificial Intelligence, Retrieval Augmented Generation, RAG]
+image: assets/images//comparing_embedders/cover.png
 ---
 
 <style>
@@ -20,49 +20,60 @@ image: assets/images//comparing_embedders_for_rag/cover.png
 </center>
 <br>
 
-### Can we trust LLMs?
+### Can LLMs discriminate against us?
 
-When it comes to AI, discerning between hype and reality can sometimes be challenging.
+This is a deliberately vague and somewhat provocative question, but let me explain.
 
-Modern *large language models* (LLM), indeed, fall within the metaphor of **stochastic parrots**.
+Speaking about AI, we all know that most *large language models* work better in English.
 
-(***On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?***, by *Emily M. Bender*, *Timnit Gebru*, *Angelina McMillan*, *Shmargaret Shmitchell*)
+The same goes for ***embedders***, though multi-language models are a good alternative.
 
+But let's say we have a database of documents written in another language, and we want to find out which one is the most suitable for our purpose.
+
+How can we achieve that goal?
+
+### Our idea, in synthesis
+
+Let's take **some topics**, with **topic related sentences** (to speed up the process, we <ins>asked an LLM to generate them</ins> for us).
+
+Then, with each model, we generate the embeddings for every topic and sentence, and calculate:
+
+1. The distance of **every sentences** from a **every topics**
+
+2. The distance of **each sentence related to a topic** from **that topic itself**
+
+At this point, we can answer these questions:
+
+1. How far is <ins>**each sentence** from **a specific topic**</ins>?
+   
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/parrot.png">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/barchart.png">
     <br>
-    <em> AI as "stochastic parrot" (Image by author) </em>
+    <em> Example of bar chart visualization (Image by author) </em>
 </center>
 
-In short, they are unaware of the language they process, so we cannot fully trust the answers they provide.
+2. Which is the average distance of each sentence from the topic it should be related to?
 
-So, the answer could be "it depends on our expectations and objectives".
+<center>
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/average.png">
+    <br>
+    <em> Example average and standard deviation (Image by author) </em>
+</center>
 
-### RAG: "This is the Way"
+### Our method: a little in-depth
 
-But what if we wanted to use AI for language-related tasks. ***in a production environment***?
 
-We could follow different strategies reduce hallucinations, such as:
-- **Training** a model on a specific dataset
-- **Fine-tuning** a pretrained model
-- Using **Retrieval Augmented Generation (RAG)**
+Basically, our method consists of five steps:
 
-To achieve our professional goals, RAG stands out as the most suitable option, as it:
-
-1. Avoids <ins>the costs of training/fine-tuning</ins> modeks
-2. Allows for **easier updates of sources** as needed
-
-The idea is to provide an enriched context to the LLM, and then use it only for language synthesis.
-
-In this sense, selecting an effective embedder plays a crucial role in the retrieval process.
-
-In fact, the generation of embeddings is the basis of the process of retrieval.
-
-**This article** steps into a possible approach to **evaluate various embedders** for a specific language.
+1. Creation of samples (sentences relating to certain categories)
+2. Choice/download of the model/models we want to test
+3. Generation of embeddings (of samples and categories, for each model we want to test)
+4. Storage of embeddings in a vector database (we used Qdrant)
+5. Calculation of distances and final evaluation
 
 #### STEP 1: Creating samples
 
-I created samples with the following structure:
+Let's create one or more sample with the following structure:
 
 ```json
 {
@@ -92,18 +103,26 @@ I created samples with the following structure:
 
 #### STEP 2: Downloading models
 
-After conducting some research, I compiled a list of effective embedders for Italian:
+After conducting some research, we compiled a list of effective embedders for Italian:
 
 - [Anita](https://huggingface.co/DeepMount00/Anita)
 - [cross_encoder_italian_bert_stsb](https://huggingface.co/nickprock/cross-encoder-italian-bert-stsb)
 - [mmarco_bert_base_italian_uncased](https://huggingface.co/nickprock/mmarco-bert-base-italian-uncased)
 - [multi_e5](https://huggingface.co/intfloat/multilingual-e5-large)
-- [other models ...]
+- [sentence_bert_base_italian_xxl_uncased](https://huggingface.co/nickprock/sentence-bert-base-italian-xxl-uncased)
+- [stsbm_sentence_flare_it](https://huggingface.co/nickprock/stsbm-sentence-flare-it)
+- [italian_ner_xxl](https://huggingface.co/DeepMount00/Italian_NER_XXL)
+- [stsb_multi_mt](https://huggingface.co/abhijithneilabraham/stsb_multi_mt_distilbert-base-uncased)
+- [multilingual_minilm](https://huggingface.co/microsoft/Multilingual-MiniLM-L12-H384)
+- [bert_base_italian_xxl_uncased](https://huggingface.co/dbmdz/bert-base-italian-xxl-uncased)
+- [umberto_commoncrawl_cased](https://huggingface.co/Musixmatch/umberto-commoncrawl-cased-v1)
+- [paraphrase_multilingual_mpnet_v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-mpnet-base-v2)
 
-Subsequently, I used ***transformer*** library to download and tokenize models, iterating over my list.
+
+Subsequently, we used [**transformer**](https://huggingface.co/docs/hub/transformers) library to download these models:
 
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/download.gif">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/download.gif">
     <br>
     <em> Downloading and instantiating embedders (Screencast by author) </em>
 </center>
@@ -111,9 +130,9 @@ Subsequently, I used ***transformer*** library to download and tokenize models, 
 
 #### STEP 3: Creating the embeddings
 
-I created embeddings for every topic/sentence, iterating over samples in samples' directory.
+We create embeddings for every topic/sentence, iterating over samples in samples' directory.
 
-To achieve this, I used ***langchain_huggingface*** library:
+To achieve this, we used [**langchain_huggingface**](https://python.langchain.com/docs/integrations/providers/huggingface/) library:
 
 ```python
     from langchain_huggingface import HuggingFaceEmbeddings
@@ -129,14 +148,14 @@ To achieve this, I used ***langchain_huggingface*** library:
 ```
 
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/embeddings.gif" width="1100">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/embeddings.gif" width="1100">
     <br>
     <em> Generating embeddings (Screencast by author) </em>
 </center>
 
 #### STEP 4: Storing to Qdrant
 
-Next, I stored these embeddings in [**Qdrant**](https://qdrant.tech/documentation/overview/) using its Python client.
+Next, we store these embeddings in [**Qdrant**](https://qdrant.tech/documentation/overview/) using its [Python client](https://python-client.qdrant.tech/).
 
 Here’s an example setup:
 
@@ -155,9 +174,9 @@ Here’s an example setup:
 ```
 
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/qdrant.gif" width="1100">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/qdrant.gif" width="1100">
     <em> Creating collections and upserting points (Screencast by author) </em>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/collections.gif" width="1100">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/collections.gif" width="1100">
     <em> Qdrant points visualization (Screencast by author) </em>
     <br>
 </center>
@@ -167,7 +186,7 @@ Here’s an example setup:
 But how does evaluation process work?
 
 1. **Querying Qdrant**
-    * I fetch stored points from a specified collection using a method that scrolls through all items:
+    * We fetch stored points from a specified collection using a method that scrolls through all items:
 
     ```python
         from qdrant_client import QdrantClient
@@ -181,84 +200,53 @@ But how does evaluation process work?
         return points
     ```
 2. **Calculating Distances**
-    * For each topic, I compute the distance between the sentence and the topic embeddings using various metrics:
+    * For each topic, we compute the distance between the sentence and the topic embeddings using various metrics:
 
     ```python
-        from scipy.spatial.distance import cosine
+        from scipy.spatial.distance import cosine, euclidean, cityblock
 
-        def _compute_distance(vector1, vector2, metric: str):
+        def _compute_distance(self, vector1, vector2, metric: str):
             if metric == "cosine":
                 return cosine(vector1, vector2)
-            # Additional metrics can be added here...
-
-        def _evaluate_distances(self, points, categories):
-            distances = {category: [] for category in categories}
-            for point in points:
-                sentence_vector = list(point.vector.values())[0]
-                for category, category_vector in categories.items():
-                    distance = self._compute_distance(category_vector, sentence_vector, "cosine")
-                    distances[category].append({'sentence': point.payload["sentence"], 'distance': distance})
-
-            # Sort distances for each category
-            for category in distances:
-                distances[category].sort(key=lambda x: x['distance'])
-            return distances
+            elif metric == "euclidean":
+                return euclidean(vector1, vector2)
+            elif metric == "dot":
+                return -np.dot(vector1, vector2)
+            elif metric == "manhattan":
+                return cityblock(vector1, vector2)
+            return None
     ```
+
+    * Then, we sort the results in ascending order: for each topic, nearer sentences come first.
 
 3. **Calculating Averages**
-    * I calculate the average distances and standard deviations for each category:
 
-    ```python
-    def _calculate_statistics(self, distances):
-        category_averages = {}
-        for category, values in distances.items():
-            distances_list = [item['distance'] for item in values]
-            avg_distance = sum(distances_list) / len(distances_list) if distances_list else 0
-            std_dev = round(np.std(distances_list), 3) if len(distances_list) > 1 else 0
-            category_averages[category] = {"average_distance": round(avg_distance, 3), "std_dev": std_dev}
-        return category_averages
-    ```
+* Finally:
 
+    * I calculate the average distances and standard deviations for each category.
+    
     * By iterating over the distance metrics and models, I conduct evaluations for each combination and store the sorted results accordingly.
 
 #### STEP 6: Generating plots
 
 This final step may be useful for visualizing the results of our evaluations.
 
-Using **matplotlib** and **seaborn**, I implemented a class to generate heatmaps and barcharts from the evaluation results.
+Using [**matplotlib**](https://matplotlib.org/stable/users/explain/quick_start.html) and [**seaborn**](https://seaborn.pydata.org/), we implemented a class to generate heatmaps and barcharts from the evaluation results.
 
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/plots.gif">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/plots.gif">
     <br>
     <em> Generating plots (Screencast by author) </em>
 </center>
 
 These visualizations help in understanding the performance of different embedders at a glance.
 
-Additionally, I built a small GUI using the [**streamlit**](https://streamlit.io/) framework, to facilitate interaction with the visual data.
+Additionally, we built a small GUI using the [**streamlit**](https://streamlit.io/) framework, to facilitate interaction with the visual data.
 
 Here’s the final result:
 
 <center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/viz.gif">
+    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders/viz.gif">
     <br>
     <em> Interactive visualization (Screencast by author) </em>
-</center>
-
-<center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/heatmap.png">
-    <br>
-    <em> Example heatmap (Image by author) </em>
-</center>
-
-<center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/barchart.png">
-    <br>
-    <em> Example barchart (Image by author) </em>
-</center>
-
-<center>
-    <img src="{{ site.url }}{{ site.baseurl }}/assets/images/comparing_embedders_for_rag/average.png">
-    <br>
-    <em> Example average and standard deviation (Image by author) </em>
 </center>

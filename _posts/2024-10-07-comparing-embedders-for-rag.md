@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Which embedder best fits your language?"
+title: "Which text-embedder best fits your language?"
 excerpt: "How not to get lost in multidimensional space"
 author: francesco.zubani
 
@@ -59,6 +59,11 @@ At this point, we can answer these questions:
     <br>
     <em> Example average and standard deviation (Image by author) </em>
 </center>
+
+For models that perform better on a given language, we expect that:
+1. Sentences related to a topic have a shorter distance from their respective topics
+2. The average distance of all related sentences from their topic will be lower
+3. There is less variance in distances, so the standard deviation will be lower too
 
 ### Our method: a little in-depth
 
